@@ -10,19 +10,19 @@
     "small-ci": "bin/index"
   },
   "scripts": {
-    "install": "npm i -D && npm run build",
+    "install": "npm run build",
     "build": "tsc",
     "start:dev": "tsc && node dist/index"
   },
   "author": "nerlihmax",
   "license": "MIT",
   "devDependencies": {
-    "@types/axios": "^0.14.0",
-    "@types/node": "^16.11.6",
-    "@types/yargs": "^17.0.5",
     "nodemon": "^2.0.14"
   },
   "dependencies": {
+    "@types/axios": "^0.14.0",
+    "@types/node": "^16.11.6",
+    "@types/yargs": "^17.0.5",
     "ajv": "^8.6.3",
     "ajv-formats": "^2.1.1",
     "axios": "^0.24.0",
