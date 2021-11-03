@@ -53,6 +53,8 @@ export const getLastTag = (tags: GitTag[]) => tags[0];
 export const getPreviousRef = async (tags: GitTag[], current: GitTag): Promise<GitRef> => {
   const currentTagIndex = tags.indexOf(current);
   if (currentTagIndex === -1) {
+    console.error(tags);
+    console.error(current);
     console.error('currentTagIndex === -1');
     console.error(ErrorMessages.somethingWentWrong);
     exit(-1);
