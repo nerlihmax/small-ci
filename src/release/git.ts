@@ -42,6 +42,7 @@ export const getTail = async (): Promise<GitRef> => {
     const tail: GitRef = (await sh(cmd)).stdout;
     return tail;
   } catch (ex) {
+    console.error(ex);
     console.error(ErrorMessages.somethingWentWrong);
     exit(-1);
   }
@@ -52,6 +53,7 @@ export const getLastTag = (tags: GitTag[]) => tags[0];
 export const getPreviousRef = async (tags: GitTag[], current: GitTag): Promise<GitRef> => {
   const currentTagIndex = tags.indexOf(current);
   if (currentTagIndex === -1) {
+    console.error('currentTagIndex === -1');
     console.error(ErrorMessages.somethingWentWrong);
     exit(-1);
   }
@@ -79,6 +81,7 @@ export const getRefAuthor = async (ref: GitRef) => {
     const author = (await sh(cmd, true)).stdout;
     return author;
   } catch (err) {
+    console.error(err);
     console.error(ErrorMessages.somethingWentWrong);
     exit(-1);
   }
