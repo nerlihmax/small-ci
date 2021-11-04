@@ -30,7 +30,8 @@ export const useTracker = (oauth: string, orgId: string) => {
       assignee,
     } = issue;
 
-    const summaryWithAuthor = `${summary} ${assignee} ${new Date()}`;
+    const summaryWithAuthor = `${summary} ${assignee}`;
+    const descriptionWithDate = `${new Date()}\n${description}`;
 
     try {
       const response = await api({
@@ -40,7 +41,7 @@ export const useTracker = (oauth: string, orgId: string) => {
           summary: summaryWithAuthor,
           queue,
           type,
-          description,
+          description: descriptionWithDate,
         },
       });
     } catch (ex) {
