@@ -7,6 +7,7 @@ import { ValidateFunction } from 'ajv';
 
 import { CiScript } from './common/types';
 import { ErrorMessages } from './common/strings';
+import { setDebug } from './common/logger';
 
 const CONFIG_FILENAME = 'small-ci.config.json';
 
@@ -25,6 +26,7 @@ const parseArgs = async (source: string[]) => {
 
   return {
     commands: stringifyCmds(commands),
+    args,
   };
 };
 
@@ -72,7 +74,9 @@ const getScriptConfig = (
 };
 
 export const bootstrap = async (scripts: CiScript[]) => {
-  const {commands} = await parseArgs(process.argv);
+  const {commands, args} = await parseArgs(process.argv);
+
+  setDebug(!!args?.debug);
 
   const fullConfig = await getFullConfig();
 

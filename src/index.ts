@@ -1,9 +1,8 @@
 import { bootstrap } from './bootstrap';
-
-import release from './release';
+import tracker from './tracker';
 
 const scripts = [
-  release,
+  tracker,
 ];
 
 bootstrap(scripts);

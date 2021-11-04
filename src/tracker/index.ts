@@ -1,5 +1,5 @@
 import { CiScript, CiScriptExecutor } from '../common/types';
-import { CiReleaseConfig, configValidator } from './config';
+import { CiTrackerConfig, configValidator } from './config';
 import {
   checkGit,
   getLastTag,
@@ -16,7 +16,7 @@ const executor: CiScriptExecutor = async (config: any) => {
     orgId,
     tagPattern,
     queue,
-  } = config as CiReleaseConfig;
+  } = config as CiTrackerConfig;
 
   await checkGit();
 
@@ -44,8 +44,8 @@ const executor: CiScriptExecutor = async (config: any) => {
 };
 
 const script: CiScript = {
-  name: 'Release',
-  cliCmd: 'release',
+  name: 'Tracker',
+  cliCmd: 'tracker',
   run: executor,
   configValidator,
 };

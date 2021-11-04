@@ -4,20 +4,20 @@ import addFormats from 'ajv-formats';
 const ajv = new Ajv({ useDefaults: true });
 addFormats(ajv);
 
-export interface CiReleaseConfig {
+export interface CiTrackerConfig {
   orgId: string;
   oauth: string;
   tagPattern: string;
   queue: string;
 }
 
-const configSchema: JSONSchemaType<CiReleaseConfig> = {
+const configSchema: JSONSchemaType<CiTrackerConfig> = {
   type: 'object',
   properties: {
     orgId: { type: 'string' },
     oauth: {
       type: 'string',
-      default: process.env.SCI_RELEASE_OAUTH || ''
+      default: process.env.SCI_TRACKER_OAUTH || ''
     },
     tagPattern: {
       type: 'string',
@@ -28,4 +28,4 @@ const configSchema: JSONSchemaType<CiReleaseConfig> = {
   required: ['orgId', 'oauth', 'tagPattern', 'queue'],
 };
 
-export const configValidator = ajv.compile<CiReleaseConfig>(configSchema);
+export const configValidator = ajv.compile<CiTrackerConfig>(configSchema);
