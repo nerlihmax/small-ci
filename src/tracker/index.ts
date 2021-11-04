@@ -1,3 +1,4 @@
+import { DLOG } from '../common/logger';
 import { CiScript, CiScriptExecutor } from '../common/types';
 import { CiTrackerConfig, configValidator } from './config';
 import {
@@ -19,16 +20,22 @@ const executor: CiScriptExecutor = async (config: any) => {
   } = config as CiTrackerConfig;
 
   await checkGit();
+  DLOG('found git');
 
   const tags = await getTags(tagPattern);
+  DLOG(tags);
 
   const last = await getLastTag(tags);
+  DLOG(last);
 
   const prev = await getPreviousRef(tags, last);
+  DLOG(prev);
 
   const changelogs = await makeChangelogs(prev, last);
+  DLOG(changelogs);
 
   const author = await getRefAuthor(last);
+  DLOG(author);
 
   const { createIssue } = useTracker(oauth, orgId);
 
@@ -39,6 +46,7 @@ const executor: CiScriptExecutor = async (config: any) => {
     type: 'task',
     queue,
   };
+  DLOG(issue);
 
   await createIssue(issue);
 };

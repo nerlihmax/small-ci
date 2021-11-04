@@ -7,7 +7,7 @@ import { ValidateFunction } from 'ajv';
 
 import { CiScript } from './common/types';
 import { ErrorMessages } from './common/strings';
-import { setDebug } from './common/logger';
+import { DLOG, setDebug, DEBUG } from './common/logger';
 
 const CONFIG_FILENAME = 'small-ci.config.json';
 
@@ -81,16 +81,20 @@ export const bootstrap = async (scripts: CiScript[]) => {
   const fullConfig = await getFullConfig();
 
   const {
+    name,
     run,
     cliCmd,
     configValidator,
   } = findScript(scripts, commands);
+
+  console.log(`🚀 running ${name} script ${DEBUG && 'in debug mode'}`);
 
   const config = getScriptConfig(
     fullConfig,
     cliCmd,
     configValidator,
   );
+  DLOG(config);
 
   run(config);
 };

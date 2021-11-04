@@ -2,6 +2,7 @@ import { exit } from 'process';
 import execSh from 'exec-sh';
 
 import { ErrorMessages } from './strings';
+import { DERROR, DLOG } from '../common/logger';
 
 const sh = execSh.promise;
 
@@ -14,7 +15,8 @@ export const checkGit = async () => {
   try {
     const cmd = 'git --version';
     await sh(cmd);
-  } catch (err) {
+  } catch (ex) {
+    DERROR(ex)
     console.error(ErrorMessages.gitNotFound);
     exit(-1);
   }
@@ -30,7 +32,8 @@ export const getTags = async (pattern: string): Promise<GitTag[]> => {
       .reverse();
 
     return tags;
-  } catch (err) {
+  } catch (ex) {
+    DERROR(ex);
     console.error(ErrorMessages.noTagsInRepository);
     exit(-1);
   }
@@ -42,7 +45,7 @@ export const getTail = async (): Promise<GitRef> => {
     const tail: GitRef = (await sh(cmd)).stdout;
     return tail;
   } catch (ex) {
-    console.error(ex);
+    DERROR(ex);
     console.error(ErrorMessages.somethingWentWrong);
     exit(-1);
   }
@@ -53,9 +56,9 @@ export const getLastTag = (tags: GitTag[]) => tags[0];
 export const getPreviousRef = async (tags: GitTag[], current: GitTag): Promise<GitRef> => {
   const currentTagIndex = tags.indexOf(current);
   if (currentTagIndex === -1) {
-    console.error(tags);
-    console.error(current);
-    console.error('currentTagIndex === -1');
+    DLOG(tags);
+    DLOG(current);
+    DLOG('currentTagIndex === -1');
     console.error(ErrorMessages.somethingWentWrong);
     exit(-1);
   }
@@ -71,7 +74,8 @@ export const makeChangelogs = async (from: GitTag, to: GitTag) => {
     const cmd = `git --no-pager log ${from}..${to} --pretty=format:'%h %s'`;
     const changelogs = (await sh(cmd, true)).stdout;
     return changelogs;
-  } catch (err) {
+  } catch (ex) {
+    DERROR(ex);
     console.error(ErrorMessages.cantGetChangelogs);
     exit(-1);
   }
@@ -82,8 +86,8 @@ export const getRefAuthor = async (ref: GitRef) => {
     const cmd = `git --no-pager show -s --pretty=format:"%aN %aE" ${ref}`;
     const author = (await sh(cmd, true)).stdout;
     return author;
-  } catch (err) {
-    console.error(err);
+  } catch (ex) {
+    DERROR(ex);
     console.error(ErrorMessages.somethingWentWrong);
     exit(-1);
   }
