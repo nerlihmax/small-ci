@@ -1,6 +1,6 @@
 # small-ci
 
-![image](https://user-images.githubusercontent.com/17108273/140666471-3840710c-4a4a-4f82-a77a-3c12be1146eb.png)
+![npm](https://img.shields.io/npm/v/small-ci)
 ![main language](https://img.shields.io/github/languages/top/nerlihmax/small-ci)
 ![loc](https://img.shields.io/tokei/lines/github/nerlihmax/small-ci)
 
