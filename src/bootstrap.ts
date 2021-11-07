@@ -3,7 +3,6 @@ import { hideBin } from 'yargs/helpers';
 import { exit } from 'process';
 import { readFile } from 'fs/promises';
 import fg from 'fast-glob';
-import { ValidateFunction } from 'ajv';
 
 import { CiScript } from './common/types';
 import { ErrorMessages } from './common/strings';
@@ -53,26 +52,6 @@ const findScript = (scripts: CiScript[], args: string[]) => {
   return found;
 };
 
-const getScriptConfig = (
-  fullConfig: any,
-  cliCmd: string,
-  validator: ValidateFunction,
-): any => {
-  if (!fullConfig[cliCmd]) {
-    console.error(ErrorMessages.invalidConfig);
-    exit(-1);
-  }
-
-  const scriptConfig = fullConfig[cliCmd];
-
-  if (!validator(scriptConfig)) {
-    console.error(ErrorMessages.invalidConfig);
-    exit(-1);
-  }
-
-  return scriptConfig;
-};
-
 export const bootstrap = async (scripts: CiScript[]) => {
   const {commands, args} = await parseArgs(process.argv);
 
@@ -84,17 +63,9 @@ export const bootstrap = async (scripts: CiScript[]) => {
     name,
     run,
     cliCmd,
-    configValidator,
   } = findScript(scripts, commands);
 
-  console.log(`🚀 running ${name} script ${DEBUG && 'in debug mode'}`);
+  console.log(`🚀 running ${name} script ${DEBUG ? 'in debug mode' : ''}`);
 
-  const config = getScriptConfig(
-    fullConfig,
-    cliCmd,
-    configValidator,
-  );
-  DLOG(config);
-
-  run(config, commands, args);
+  run(fullConfig, commands, args);
 };

@@ -10,5 +10,4 @@ export interface CiScript {
   name: string;
   cliCmd: string;
   run: CiScriptExecutor;
-  configValidator: ValidateFunction<any>;
 }
