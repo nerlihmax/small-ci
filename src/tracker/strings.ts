@@ -5,3 +5,7 @@ export enum ErrorMessages {
   somethingWentWrong = 'wtf dude?!',
   trackerApiError = 'yandex tracker api error',
 }
+
+export enum LogMessages {
+  issueExists = 'issue exists',
+}

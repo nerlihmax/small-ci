@@ -1,7 +1,9 @@
-import {DLOG} from '../common/logger';
-import {CiScript, CiScriptExecutor} from '../common/types';
-import {CiTrackerConfig, configValidator} from './config';
-import {
+import { exit } from 'process';
+import { getScriptConfig } from '../common/config';
+import { DLOG } from '../common/logger';
+import { CiScript, CiScriptExecutor } from '../common/types';
+import { CiTrackerConfig, configValidator } from './config';
+import { 
   checkGit,
   getLastTag,
   getPreviousRef,
@@ -9,7 +11,8 @@ import {
   getTags,
   makeChangelogs,
 } from './git';
-import {summaryWithAuthor, TrackerIssue, useTracker} from './tracker';
+import { LogMessages } from './strings';
+import { summaryWithAuthor, TrackerIssue, useTracker } from './tracker';
 
 const createTask = async (config: any, commands: string[], args: any) => {
   const {
@@ -37,17 +40,17 @@ const createTask = async (config: any, commands: string[], args: any) => {
   const author = await getRefAuthor(last);
   DLOG(author);
 
-  const {createIssue, findIssue} = useTracker(oauth, orgId);
+  const { createIssue, findIssue } = useTracker(oauth, orgId);
 
   const summary = summaryWithAuthor(last, author);
   DLOG(summary);
   
-  const {key} = await findIssue(queue, summary);
+  const { key } = await findIssue(queue, summary);
   DLOG(key);
 
   if (key) {
-    console.log('issue exists');
-    return;
+    console.log(LogMessages.issueExists);
+    exit(0);
   }
 
   const issue: TrackerIssue = {
@@ -70,7 +73,7 @@ const comment = async (config: any, commands: string[], args: any) => {
     tagPattern,
   } = config as CiTrackerConfig;
 
-  const {findIssue, addComment} = useTracker(oauth, orgId);
+  const { findIssue, addComment } = useTracker(oauth, orgId);
 
   const text = args.comment;
   DLOG(text);
@@ -90,30 +93,34 @@ const comment = async (config: any, commands: string[], args: any) => {
   const summary = summaryWithAuthor(last, author);
   DLOG(summary)
 
-  const {key} = await findIssue(queue, summary);
+  const { key } = await findIssue(queue, summary);
   DLOG(key);
 
   await addComment(text, key);
 };
 
 const executor: CiScriptExecutor = async (
-  config,
+  fullConfig,
   commands,
   args,
 ) => {
+  const config = getScriptConfig(
+    fullConfig,
+    script.cliCmd,
+    configValidator,
+  );
+  
   if (!!args?.comment) {
     await comment(config, commands, args);
   } else {
     await createTask(config, commands, args);
   }
-  
 };
 
 const script: CiScript = {
   name: 'Tracker',
   cliCmd: 'tracker',
   run: executor,
-  configValidator,
 };
 
 export default script;
