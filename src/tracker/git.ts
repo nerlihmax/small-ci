@@ -14,7 +14,7 @@ export type GitRef = GitTag | GitCommit;
 export const checkGit = async () => {
   try {
     const cmd = 'git --version';
-    DLOG(cmd);
+    DLOG(`cmd: ${cmd}`);
     await sh(cmd);
   } catch (ex) {
     DERROR(ex)
@@ -26,7 +26,7 @@ export const checkGit = async () => {
 export const getTags = async (pattern: string): Promise<GitTag[]> => {
   try {
     const cmd = `git --no-pager tag --list ${pattern}`;
-    DLOG(cmd);
+    DLOG(`cmd: ${cmd}`);
     const { stdout } = await sh(cmd, true);
     const tags: GitTag[] = stdout
       .split('\n')
@@ -44,7 +44,7 @@ export const getTags = async (pattern: string): Promise<GitTag[]> => {
 export const getTail = async (): Promise<GitRef> => {
   try {
     const cmd = `git rev-list --max-parents=0 HEAD`;
-    DLOG(cmd);
+    DLOG(`cmd: ${cmd}`);
     const tail: GitRef = (await sh(cmd)).stdout;
     return tail;
   } catch (ex) {
@@ -75,7 +75,7 @@ export const getPreviousRef = async (tags: GitTag[], current: GitTag): Promise<G
 export const makeChangelogs = async (from: GitTag, to: GitTag) => {
   try {
     const cmd = `git --no-pager log ${from}..${to} --pretty=format:'%h %s'`;
-    DLOG(cmd);
+    DLOG(`cmd: ${cmd}`);
     const changelogs = (await sh(cmd, true)).stdout;
     return changelogs;
   } catch (ex) {
@@ -88,7 +88,7 @@ export const makeChangelogs = async (from: GitTag, to: GitTag) => {
 export const getRefAuthor = async (ref: GitRef) => {
   try {
     const cmd = `git --no-pager show -s --pretty=format:"%aN %aE" ${ref}`;
-    DLOG(cmd);
+    DLOG(`cmd: ${cmd}`);
     const author = (await sh(cmd, true)).stdout;
     return author;
   } catch (ex) {
