@@ -1,3 +1,4 @@
 node_modules
 .DS_Store
 dist
+small-ci.config.json

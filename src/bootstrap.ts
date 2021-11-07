@@ -96,5 +96,5 @@ export const bootstrap = async (scripts: CiScript[]) => {
   );
   DLOG(config);
 
-  run(config);
+  run(config, commands, args);
 };

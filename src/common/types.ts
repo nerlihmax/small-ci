@@ -1,6 +1,10 @@
 import { ValidateFunction } from 'ajv';
 
-export type CiScriptExecutor = (config: any) => void | Promise<void>;
+export type CiScriptExecutor = (
+  config: any,
+  commands: string[],
+  args: any,
+) => void | Promise<void>;
 
 export interface CiScript {
   name: string;
