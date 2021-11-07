@@ -21,7 +21,7 @@ const configSchema: JSONSchemaType<CiTrackerConfig> = {
     },
     tagPattern: {
       type: 'string',
-      default: "'v*.*.*'"
+      default: 'v*.*.*',
     },
     queue: { type: 'string' },
   },
