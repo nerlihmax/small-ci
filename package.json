@@ -4,7 +4,7 @@
     "type": "git",
     "url": "https://github.com/nerlihmax/small-ci"
   },
-  "version": "0.1.10",
+  "version": "0.1.11",
   "description": "ci scripts",
   "bin": {
     "small-ci": "bin/index"
