@@ -25,7 +25,7 @@ export const checkGit = async () => {
 
 export const getTags = async (pattern: string): Promise<GitTag[]> => {
   try {
-    const cmd = `git --no-pager tag --list ${pattern}`;
+    const cmd = `git --no-pager tag --list '${pattern}'`;
     DLOG(`cmd: ${cmd}`);
     const { stdout } = await sh(cmd, true);
     const tags: GitTag[] = stdout
